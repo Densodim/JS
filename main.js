@@ -39,7 +39,7 @@ function createPlayer(clas, name, hp){
     $progressbar.appendChild($progressbarLife);
 
     const $characterImg = document.createElement('img');
-    $characterImg.src = 'http://reactmarathon-api.herokuapp.com/assets/scorpion.gif';
+    $characterImg.src = 'assets/scorpion.gif';
     $character.appendChild($characterImg);
     const $root = document.querySelector('.arenas');
     $root.appendChild($player1);
