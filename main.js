@@ -1,53 +1,72 @@
 const $root = document.querySelector('.arenas');
 const $randomButam = document.querySelector('.button');
-const player1 = {
+
+
+var player1 = {
     player: 1,
     name: 'Scortion',
-    hp: 100,
+    hp: 105,
     img: 'assets/scorpion.gif',
     weapon: ['pika'],
-    attack: function () {
-        console.log(name + 'Figth ...')
-    }
+    attack,
+    changeHP,
 }
 
-const player2 = {
+
+var player2 = {
     player: 2,
     name: 'Sub-Zero',
     hp: 100,
     img: 'assets/subzero.gif',
     weapon: ['tapor'],
-    attack: function () {
-        console.log(name + 'Figth ...')
-    }
+    attack,
+    changeHP,
 }
 
-function playerLose (name){
+function attack () {
+    console.log(this);
+    console.log( + '' + 'Figth ...');
+}
+
+
+function playerLose(name) {
     const $loseTitle = createElement('div', 'loseTitle');
     $loseTitle.innerText = name + ' Lose!!';
 
     return $loseTitle;
 }
 
-function playerWin (name){
- const $wineTitle = createElement('div', 'loseTitle');
- $wineTitle.innerText = name + 'Win!!';
+function playerWin(name) {
+    const $wineTitle = createElement('div', 'loseTitle');
 
- return $wineTitle;
+    if (name) {
+        $wineTitle.innerText = name + 'Win!!';
+    } else {
+        $wineTitle.innerText = name + 'drow!';
+    }
+    return $wineTitle;
 }
 
+
+
 function changeHP(player) {
-    const $playerLife = document.querySelector('.player'+player.player+' .life');
+    // console.log(player);
+
+
+    const $playerLife = document.querySelector('.player' + player.player + ' .life');
     player.hp -= Math.ceil(Math.random() * 10);
-    console.log(player.hp);
     $playerLife.style.width = player.hp + '%';
-    console.log(player);
-    if (player.hp < 0){
-        $root.appendChild(playerWin(player.name));
-        if (player.player != player.player ){
-            $root.appendChild(playerWin(player.name));
-        }
+    if (player.hp <= 0) {
+        player.hp = 0;
     }
+}
+
+function elHP (){
+
+}
+
+function renderHP (){
+
 }
 
 function createElement(tag, className) {
@@ -80,9 +99,20 @@ function createPlayer(playerObj) {
     return $player1;
 }
 
+
 $randomButam.addEventListener('click', function () {
     changeHP(player1);
     changeHP(player2);
+    if (player1.hp === 0 || player2.hp === 0) {
+        $randomButam.disabled = true;
+    }
+    if (player1.hp === 0 && player1.hp < player2.hp) {
+        $root.appendChild(playerWin(player2.name));
+    } else if (player2.hp === 0 && player2.hp < player1.hp) {
+        $root.appendChild(playerWin(player1.name));
+    } else if (player1.hp === 0 && player2.ph === 0) {
+        $root.appendChild(playerWin());
+    }
 });
 
 $root.appendChild(createPlayer(player1));
