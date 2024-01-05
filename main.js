@@ -35,7 +35,6 @@ const player2 = {
  *
  */
 function attack() {
-    console.log(this);
     console.log(+'' + 'Figth ...');
 }
 
