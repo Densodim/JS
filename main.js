@@ -87,7 +87,7 @@ function renderHP() {
 }
 
 /**
- * фукция случайной генерации целых чисел,
+ * фукция случайных чисел,
  * @param params
  * @returns {number}
  */
