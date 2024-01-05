@@ -66,15 +66,14 @@ function playerWin(name) {
  * фукция изминения ХП игрока
  * @param player
  */
-function changeHP(damage) {
-    // console.log(player);
+function changeHP(player) {
 
-    const $playerLife = document.querySelector('.player' + this.player + ' .life');
-    this.hp -= Math.ceil(Math.random() * 10);
-    $playerLife.style.width = this.hp + '%';
+    const $playerLife = document.querySelector('.player' + player.player + ' .life');
 
-    if (this.hp <= 0) {
-        this.hp = 0;
+    $playerLife.style.width = player.hp + '%';
+
+    if (player.hp <= 0) {
+        player.hp = 0;
     }
 }
 
@@ -144,8 +143,8 @@ function createPlayer(playerObj) {
  */
 $randomButam.addEventListener('click', function () {
 
-    changeHP(player1);
-    changeHP(player2);
+    // changeHP(player1);
+    // changeHP(player2);
     if (player1.hp === 0 || player2.hp === 0) {
         $randomButam.disabled = true;
         createReloadButton();
@@ -169,10 +168,7 @@ function ememyAttack(){
     }
 }
 
-$formFigth.addEventListener('submit', function (e) {
-    e.preventDefault();
-    const enemy = ememyAttack();
-
+function playerAttak (){
     const attack = {};
 
     for (let item of $formFigth){
@@ -187,16 +183,23 @@ $formFigth.addEventListener('submit', function (e) {
         }
         item.checked = false;
     }
+    return attack;
+}
 
-    console.log('###:attack', attack);
-    console.log('###: enemy', enemy);
+$formFigth.addEventListener('submit', function (e) {
+    e.preventDefault();
+    const enemy = ememyAttack();
+    const player = playerAttak();
+    if (player.defence !== enemy.hit){
+        player1.changeHP(enemy.value);
+    }
+    if (enemy.defence !== player.hit){
+        player2.changeHP(player.value);
+    }
 });
-
-
 
 $root.appendChild(createPlayer(player1));
 $root.appendChild(createPlayer(player2));
-
 
 
 
