@@ -112,8 +112,7 @@ function elHP() {
  * @returns {string}
  */
 function renderHP() {
-    // console.log(this.elHP());
-    // this.elHP.style.width = this.hp + "%"; // не работает
+    // console.log(this.elHP);
     // this.elHP.style.width = this.hp + "%"; // не работает
     this.elHP().style.width = this.hp + "%";
     return this.elHP();
