@@ -1,111 +1,44 @@
-const $root = document.querySelector('.arenas');
-const $randomButam = document.querySelector('.button');
-const $formFigth = document.querySelector('.control');
-
+const $arenas = document.querySelector(".arenas");
+const $submitButton = document.querySelector(".button");
+const $formFight = document.querySelector(".control");
 
 const HIT = {
     head: 30,
     body: 25,
     foot: 20,
-}
-const ATTACK = ['head', 'body', 'foot'];
+};
+const ATTACK = ["head", "body", "foot"];
 
 const player1 = {
     player: 1,
-    name: 'Scortion',
-    hp: 105,
-    img: 'assets/scorpion.gif',
-    weapon: ['pika'],
-    attack,
+    name: "Scorpion",
+    hp: 50,
+    img: "assets/scorpion.gif",
+    weapon: ["pika"],
+    attack() {
+        console.log(this.name + " " + "Fight...");
+    },
     changeHP,
-}
-
+    elHP,
+    renderHP,
+};
 
 const player2 = {
     player: 2,
-    name: 'Sub-Zero',
-    hp: 100,
-    img: 'assets/subzero.gif',
-    weapon: ['tapor'],
-    attack,
+    name: "SAB-ZERO",
+    hp: 50,
+    img: "assets/subzero.gif",
+    weapon: ["tapor"],
+    attack() {
+        console.log(this.name + " " + "Fight...");
+    },
     changeHP,
-}
+    elHP,
+    renderHP,
+};
 
-/**
- *
- */
-function attack() {
-    console.log(+'' + 'Figth ...');
-}
-
-/**
- *
- * @param name
- * @returns {HTMLAnchorElement | HTMLElement | HTMLAreaElement | HTMLAudioElement | HTMLBaseElement | HTMLQuoteElement | HTMLBodyElement | HTMLBRElement | HTMLButtonElement | HTMLCanvasElement | HTMLTableCaptionElement | HTMLTableColElement | HTMLDataElement | HTMLDataListElement | HTMLModElement | HTMLDetailsElement | HTMLDialogElement | HTMLDivElement | HTMLDListElement | HTMLEmbedElement | HTMLFieldSetElement | HTMLFormElement | HTMLHeadingElement | HTMLHeadElement | HTMLHRElement | HTMLHtmlElement | HTMLIFrameElement | HTMLImageElement | HTMLInputElement | HTMLLabelElement | HTMLLegendElement | HTMLLIElement | HTMLLinkElement | HTMLMapElement | HTMLMenuElement | HTMLMetaElement | HTMLMeterElement | HTMLObjectElement | HTMLOListElement | HTMLOptGroupElement | HTMLOptionElement | HTMLOutputElement | HTMLParagraphElement | HTMLPictureElement | HTMLPreElement | HTMLProgressElement | HTMLScriptElement | HTMLSelectElement | HTMLSlotElement | HTMLSourceElement | HTMLSpanElement | HTMLStyleElement | HTMLTableElement | HTMLTableSectionElement | HTMLTableCellElement | HTMLTemplateElement | HTMLTextAreaElement | HTMLTimeElement | HTMLTitleElement | HTMLTableRowElement | HTMLTrackElement | HTMLUListElement | HTMLVideoElement}
- */
-function playerLose(name) {
-    const $loseTitle = createElement('div', 'loseTitle');
-    $loseTitle.innerText = name + ' Lose!!';
-
-    return $loseTitle;
-}
-
-function playerWin(name) {
-    const $wineTitle = createElement('div', 'loseTitle');
-
-    if (name) {
-        $wineTitle.innerText = name + 'Win!!';
-    } else {
-        $wineTitle.innerText = name + 'drow!';
-    }
-    return $wineTitle;
-}
-
-/**
- * фукция изминения ХП игрока
- * @param player
- */
-function changeHP(player) {
-
-    const $playerLife = document.querySelector('.player' + player.player + ' .life');
-
-    $playerLife.style.width = player.hp + '%';
-
-    if (player.hp <= 0) {
-        player.hp = 0;
-    }
-}
-
-function elHP() {
-
-}
-
-function renderHP() {
-
-}
-
-/**
- * фукция случайных чисел,
- * @param params
- * @returns {number}
- */
-function getRendom (params){
-    const rendom = Math.ceil(Math.random() * params);
-    return rendom;
-}
-
-function createReloadButton() {
-    const $reloadButtonDiv = createElement('div', 'reloadWrap');
-    const $reloadButton = createElement('button', 'button');
-    $reloadButton.innerText = 'Reload';
-
-    $reloadButton.addEventListener('click', function () {
-        window.location.reload();
-    })
-
-    $reloadButtonDiv.appendChild($reloadButton);
-    $root.appendChild($reloadButtonDiv);
-}
+// массив участвующих в игре
+const players = [player1, player2];
 
 function createElement(tag, className) {
     const $tag = document.createElement(tag);
@@ -115,91 +48,173 @@ function createElement(tag, className) {
     return $tag;
 }
 
-function createPlayer(playerObj) {
-    const $player1 = createElement('div', 'player' + playerObj.player);
-    const $progressbar = createElement('div', 'progressbar');
-    const $character = createElement('div', 'character');
-    const $progressbarLife = createElement('div', 'life');
-    const $progressbarName = createElement('div', playerObj.name);
-    const $characterImg = createElement('img');
+/**
+ * фунция создания игрока (в returns почему-то подтягивает все возможные элементы
+ * @param {string} player
+ * @returns { HTMLElement }
+ */
+function createPlayer(player) {
+    const $player = createElement("div", "player" + player.player);
+    const $progressbar = createElement("div", "progressbar");
+    const $character = createElement("div", "character");
+    const $life = createElement("div", "life");
+    $life.style.width = player.hp + "%";
 
-    $player1.appendChild($progressbar);
-    $player1.appendChild($character);
-    $progressbar.appendChild($progressbarName);
-    $progressbar.appendChild($progressbarLife);
+    const $name = createElement("div", "name");
+    $name.innerHTML = player.name;
 
-    $progressbarLife.style.width = playerObj.hp + '%';
-    $progressbarName.innerText = playerObj.name;
+    const $img = createElement("img");
+    $img.src = player.img;
 
-    $characterImg.src = playerObj.img;
-    $character.appendChild($characterImg);
+    $player.append($progressbar, $character);
+    $progressbar.append($life, $name);
+    $character.append($img);
 
-    return $player1;
+    return $player;
 }
 
 /**
- *
+ * функция рендомного числа
+ * @param {number} num
+ * @returns {number}
  */
-$randomButam.addEventListener('click', function () {
-
-    // changeHP(player1);
-    // changeHP(player2);
-    if (player1.hp === 0 || player2.hp === 0) {
-        $randomButam.disabled = true;
-        createReloadButton();
-    }
-    if (player1.hp === 0 && player1.hp < player2.hp) {
-        $root.appendChild(playerWin(player2.name));
-    } else if (player2.hp === 0 && player2.hp < player1.hp) {
-        $root.appendChild(playerWin(player1.name));
-    } else if (player1.hp === 0 && player2.ph === 0) {
-        $root.appendChild(playerWin());
-    }
-});
-function ememyAttack(){
-    const hit = ATTACK[getRendom(3)-1];
-    const defence = ATTACK[getRendom(3)-1];
-
-    return {
-        value: getRendom(HIT[hit]),
-        hit,
-        defence,
-    }
+function getRandom(num) {
+    const randomNum = Math.ceil(Math.random() * num);
+    return randomNum;
 }
 
-function playerAttak (){
+/**
+ * функция изминения HP
+ * @param {number} num
+ * @returns {number|*}
+ */
+function changeHP(num) {
+    this.hp -= num;
+    // console.log(this.hp);
+    if (this.hp <= 0) {
+        this.hp = 0;
+    }
+    return this.hp;
+}
+
+/**
+ * функция возвращает .life определенного игрока
+ * @returns {Element}
+ */
+function elHP() {
+    const $playerLife = document.querySelector(
+        ".player" + this.player + " .life"
+    );
+
+    return $playerLife;
+}
+
+/**
+ * функция отресовывывает жизни определенного игрока или игроков. Долго не мог понять почему не работает следующее вырожение this.elHP.style.width = this.hp + "%";
+ * @returns {string}
+ */
+function renderHP() {
+    // console.log(this.elHP());
+    // this.elHP.style.width = this.hp + "%"; // не работает
+    this.elHP().style.width = this.hp + "%";
+    return this.elHP();
+}
+
+/**
+ * функция выводит div элемент победивщего игрока
+ * @param {string} name
+ * @returns { HTMLElement}
+ */
+function playerWin(name) {
+    const $resultTitle = createElement("div", "loseTitle");
+    if (name) {
+        $resultTitle.innerText = name + " win!!!";
+    } else {
+        $resultTitle.innerText = "draw!";
+    }
+
+    return $resultTitle;
+}
+
+/**
+ * функция создания кнопки reload
+ * @returns {HTMLButtonElement}
+ */
+function createReloadButton() {
+    const $reloadWrap = document.createElement("div");
+    const $reloadButton = document.createElement("button");
+    $reloadWrap.classList.add("reloadWrap");
+    $reloadButton.classList.add("button");
+    $arenas.appendChild($reloadWrap);
+    $reloadWrap.appendChild($reloadButton);
+    $reloadButton.innerText = "Reload";
+    console.log($reloadButton);
+    return $reloadButton;
+}
+
+/**
+ * функция случайного выбора игроков из массива участвующих
+ * @returns {function}
+ */
+function choosePlayer() {
+    const player = players[getRandom(2) - 1];
+    return player;
+}
+
+/**
+ * функция атаки пративника
+ * @returns {{hit: string, defence: string, value: number}}
+ */
+function enemyAttack() {
+    const hit = ATTACK[getRandom(3) - 1];
+    const defence = ATTACK[getRandom(3) - 1];
+    return {
+        value: getRandom(HIT[hit]),
+        hit,
+        defence,
+    };
+}
+
+$formFight.addEventListener("submit", function (e) {
+    e.preventDefault();
+    const enemy = enemyAttack();
+
     const attack = {};
-
-    for (let item of $formFigth){
-
-        if (item.checked && item.name === 'hit'){
-            attack.value = getRendom(HIT[item.value]);
+    for (let item of $formFight) {
+        if (item.checked && item.name === "hit") {
+            attack.value = getRandom(HIT[item.value]);
             attack.hit = item.value;
         }
-
-        if (item.checked && item.name === 'defence'){
+        if (item.checked && item.name === "defence") {
             attack.defence = item.value;
         }
         item.checked = false;
     }
-    return attack;
-}
 
-$formFigth.addEventListener('submit', function (e) {
-    e.preventDefault();
-    const enemy = ememyAttack();
-    const player = playerAttak();
-    if (player.defence !== enemy.hit){
-        player1.changeHP(enemy.value);
+    const chosenPlayer = choosePlayer();
+    chosenPlayer.changeHP(getRandom(attack.value));
+    chosenPlayer.renderHP();
+    console.log(chosenPlayer);
+
+    if (player1.hp === 0 || player2.hp === 0) {
+        $submitButton.disabled = true;
+        // $submitButton.innerHTML = "Game is over!";
+        // $submitButton.style.backgroundColor = "grey";
+        // $formFight.style.opacity = "0.5";
+
+        createReloadButton().addEventListener("click", function () {
+            window.location.reload();
+        });
     }
-    if (enemy.defence !== player.hit){
-        player2.changeHP(player.value);
+
+    if (player1.hp === 0 && player1.hp < player2.hp) {
+        $arenas.appendChild(playerWin(player2.name));
+    } else if (player2.hp === 0 && player2.hp < player1.hp) {
+        $arenas.appendChild(playerWin(player1.name));
+    } else if (player1.hp === 0 && player1.hp === player2.hp) {
+        $arenas.appendChild(playerWin());
     }
 });
 
-$root.appendChild(createPlayer(player1));
-$root.appendChild(createPlayer(player2));
-
-
-
-
+$arenas.appendChild(createPlayer(player1));
+$arenas.appendChild(createPlayer(player2));
