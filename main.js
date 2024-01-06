@@ -37,7 +37,7 @@ const player2 = {
     renderHP,
 };
 
-// массив участвующих в игре
+
 const players = [player1, player2];
 
 function createElement(tag, className) {
