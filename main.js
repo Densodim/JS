@@ -78,18 +78,19 @@ function createPlayer(player) {
  * @param {number} num
  * @returns {number}
  */
-function getRandom(num) {
-    const randomNum = Math.ceil(Math.random() * num);
+function getRandom(damage) {
+    console.log(damage);
+    const randomNum = Math.ceil(Math.random() * damage);
     return randomNum;
 }
 
 /**
  * функция изминения HP
- * @param {number} num
+ * @param {number} player
  * @returns {number|*}
  */
-function changeHP(num) {
-    this.hp -= num;
+function changeHP(player) {
+    this.hp -= player;
     // console.log(this.hp);
     if (this.hp <= 0) {
         this.hp = 0;
@@ -102,19 +103,17 @@ function changeHP(num) {
  * @returns {Element}
  */
 function elHP() {
-    const $playerLife = document.querySelector(
-        ".player" + this.player + " .life"
-    );
-
+    const $playerLife = document.querySelector(".player" + this.player + " .life");
     return $playerLife;
 }
 
 /**
- * функция отресовывывает жизни определенного игрока или игроков. Долго не мог понять почему не работает следующее вырожение this.elHP.style.width = this.hp + "%";
+ * функция жизни определенного игрока или игроков. Долго не мог понять почему не работает следующее вырожение this.elHP.style.width = this.hp + "%";
  * @returns {string}
  */
 function renderHP() {
     // console.log(this.elHP());
+    // this.elHP.style.width = this.hp + "%"; // не работает
     // this.elHP.style.width = this.hp + "%"; // не работает
     this.elHP().style.width = this.hp + "%";
     return this.elHP();
@@ -157,7 +156,7 @@ function createReloadButton() {
  * @returns {function}
  */
 function choosePlayer() {
-    const player = players[getRandom(2) - 1];
+    const player = players[getRandom(2)-1 ];
     return player;
 }
 
@@ -198,9 +197,6 @@ $formFight.addEventListener("submit", function (e) {
 
     if (player1.hp === 0 || player2.hp === 0) {
         $submitButton.disabled = true;
-        // $submitButton.innerHTML = "Game is over!";
-        // $submitButton.style.backgroundColor = "grey";
-        // $formFight.style.opacity = "0.5";
 
         createReloadButton().addEventListener("click", function () {
             window.location.reload();
