@@ -79,7 +79,7 @@ function createPlayer(player) {
  * @returns {number}
  */
 function getRandom(damage) {
-    console.log(damage);
+    // console.log(damage);
     const randomNum = Math.ceil(Math.random() * damage);
     return randomNum;
 }
@@ -146,7 +146,7 @@ function createReloadButton() {
     $arenas.appendChild($reloadWrap);
     $reloadWrap.appendChild($reloadButton);
     $reloadButton.innerText = "Reload";
-    console.log($reloadButton);
+    // console.log($reloadButton);
     return $reloadButton;
 }
 
@@ -192,7 +192,7 @@ $formFight.addEventListener("submit", function (e) {
     const chosenPlayer = choosePlayer();
     chosenPlayer.changeHP(getRandom(attack.value));
     chosenPlayer.renderHP();
-    console.log(chosenPlayer);
+    // console.log(chosenPlayer);
 
     if (player1.hp === 0 || player2.hp === 0) {
         $submitButton.disabled = true;
