@@ -155,7 +155,7 @@ function createReloadButton() {
  * @returns {function}
  */
 function choosePlayer() {
-    const player = players[getRandom(2)-1 ];
+    const player = players[getRandom(2) - 1];
     return player;
 }
 
@@ -173,10 +173,7 @@ function enemyAttack() {
     };
 }
 
-$formFight.addEventListener("submit", function (e) {
-    e.preventDefault();
-    const enemy = enemyAttack();
-
+function playerAttak() {
     const attack = {};
     for (let item of $formFight) {
         if (item.checked && item.name === "hit") {
@@ -188,12 +185,15 @@ $formFight.addEventListener("submit", function (e) {
         }
         item.checked = false;
     }
+    return attack;
+}
 
-    const chosenPlayer = choosePlayer();
-    chosenPlayer.changeHP(getRandom(attack.value));
-    chosenPlayer.renderHP();
-    // console.log(chosenPlayer);
+function generateLogs (type, player1, player2){
+    const text = logs;
+    console.log(type);
+}
 
+function showResult (){
     if (player1.hp === 0 || player2.hp === 0) {
         $submitButton.disabled = true;
 
@@ -202,13 +202,38 @@ $formFight.addEventListener("submit", function (e) {
         });
     }
 
+
     if (player1.hp === 0 && player1.hp < player2.hp) {
         $arenas.appendChild(playerWin(player2.name));
+        generateLogs('hit', player2, player1);
     } else if (player2.hp === 0 && player2.hp < player1.hp) {
         $arenas.appendChild(playerWin(player1.name));
     } else if (player1.hp === 0 && player1.hp === player2.hp) {
         $arenas.appendChild(playerWin());
     }
+}
+
+$formFight.addEventListener("submit", function (e) {
+    e.preventDefault();
+    const enemy = enemyAttack();
+    const player = playerAttak();
+    // const attack = playerAttak();
+
+
+    if (player.defence !== enemy.hit){
+        player1.changeHP(enemy.value);
+        player1.renderHP();
+        generateLogs('hit', player2, player1);
+    }
+    if(enemy.defence !== player.hit){
+        player2.changeHP(player.value);
+        player2.renderHP();
+    }
+    // const chosenPlayer = choosePlayer();
+    // chosenPlayer.changeHP(getRandom(attack.value));
+    // chosenPlayer.renderHP();
+    // console.log(chosenPlayer);
+    showResult();
 });
 
 $arenas.appendChild(createPlayer(player1));
