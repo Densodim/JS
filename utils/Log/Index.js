@@ -1,3 +1,8 @@
+import {getRandom} from '../Rendom/Index.js';
+
+
+
+const $chat = document.querySelector('.chat');
 
 export const logs = {
     start:
@@ -39,4 +44,50 @@ export const logs = {
     ],
     draw: "Ничья - это тоже победа!",
 };
+
+
+
+/**
+ * функция генирации лога, `<p>${text}</p>` - вариант использования шаблонноных строк, insertAdjacentHTML('afterbegin', el) - метод добовляет текст в зависимости от выбранной позиции
+ * @param {string} type
+ * @param {Object.<string, number>} player1
+ * @param {Object.<string, number>} player2
+ */
+export const generateLogs = (type, player1, player2) => {
+    const time = new Date().toLocaleTimeString();
+    let text = '';
+    const {hp:hp1, name:name1} = player1;
+    const {hp:hp2, name:name2} = player2;
+
+
+    switch (type) {
+        case 'hit':
+            text = `${time} - ${logs[type][getRandom(logs.hit.length-1)-1]
+                .replace('[playerKick]', name1)
+                .replace('[playerDefence]', name2)} ${hp2 - 100}[${
+                hp2}/100]`;
+            // console.log('###:hit', text);
+            break;
+        case 'defence':
+            text = `${time} - ${logs[type][getRandom(logs.defence.length-1)-1]
+                .replace('[playerKick]', name2)
+                .replace('[playerDefence]', name1)} ${hp1 - 100}[${
+                hp2}/100]`;
+            // console.log('###:def', text);
+            break;
+        case 'end':
+            text = `${time} - ${logs[type][getRandom(logs.end.length)]
+                .replace('[playerWins]', name1)
+                .replace('[playerLose]', name2)}`
+            break;
+            case 'draw':
+            text = logs["draw"];
+            break;
+        default:
+            text = logs[type].replace('time', time).replace('[player1]', name1).replace('[player2]', name2);
+    }
+    const el = `<p>${text}</p>`;
+    $chat.insertAdjacentHTML('afterbegin', el);
+}
+
 
